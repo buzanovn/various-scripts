@@ -36,7 +36,7 @@ if [ -f /.dockerenv ]; then
   printf "Host *\n\tStrictHostKeyChecking no\n\n" | tee $HOME/.ssh/config
 fi
 
-echo ${SSH_DEPLOY} >> /tmp/deploy.key
+echo ${SSH_DEPLOY_KEY} >> /tmp/deploy.key
 cat /tmp/deploy.key
 chmod 400 /tmp/deploy.key
 ssh-add /tmp/deploy.key
