@@ -20,17 +20,15 @@ DISTRO_ID=$(cat /etc/os-release | grep ID | head -n1 | cut -d= -f2)
 
 case ${DISTRO_ID} in
     ubuntu)
-    elementary)
-    mint)
-        apt-get update -y && apt-get install openssh-client -y
-        ;;
+            apt-get update -y && apt-get install openssh-client -y
+            ;;
     alpine)
-        apk update && apk add openssh bash
-        ;;
+            apk update && apk add openssh bash
+            ;;
     *)
-        echo "Unknow distribution id: $DISTRO_ID" 1>&2
-        exit 3
-        ;;
+            echo "Unknow distribution id: $DISTRO_ID" 1>&2
+            exit 3
+            ;;
 esac
 
 mkdir -p ~/.ssh && eval $(ssh-agent -s)
