@@ -20,10 +20,10 @@ DISTRO_ID=$(cat /etc/os-release | grep ID | head -n1 | cut -d= -f2)
 
 case ${DISTRO_ID} in
     ubuntu)
-            apt-get update -y && apt-get install openssh-client -y
+            apt-get update -qq && apt-get install openssh-client -y
             ;;
     alpine)
-            apk update && apk add openssh bash
+            apk update && apk add openssh
             ;;
     *)
             echo "Unknow distribution id: $DISTRO_ID" 1>&2
@@ -36,4 +36,4 @@ if [ -f /.dockerenv ]; then
   printf "Host *\n\tStrictHostKeyChecking no\n\n" | tee $HOME/.ssh/config
 fi
 
-bash -c "ssh-add <(echo '${SSH_DEPLOY_KEY}') && echo 'Ready to deploy'"
+echo ${SSH_DEPLOY} >> /tmp/deploy.key && ssh-add /tmp/deploy.key && echo 'Ready to deploy'
