@@ -2,6 +2,7 @@
 # The intent of this script is to prepare environment for deploying any thing to a server
 # We check the 
 
+printenv
 
 if [ -z "$1" ]; then
     if [ -z "${DEPLOY_KEY}" ]; then
