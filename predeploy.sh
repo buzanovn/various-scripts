@@ -37,7 +37,7 @@ if [ -f /.dockerenv ]; then
 fi
 
 echo ${SSH_DEPLOY} >> /tmp/deploy.key && \
-    chmod 600 /tmp/deploy.key && \
+    chmod a=r /tmp/deploy.key && \
     ssh-add /tmp/deploy.key && \
     rm /tmp/deploy.key && \
     echo 'Ready to deploy'
