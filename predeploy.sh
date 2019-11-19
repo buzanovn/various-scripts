@@ -1,8 +1,5 @@
 #!/bin/sh
-# The intent of this script is to prepare environment for deploying any thing to a server
-# We check the 
-
-printenv
+# The intent of this script is to prepare environment for deploying anything to a server 
 
 if [ -z "$1" ]; then
     if [ -z "${DEPLOY_KEY}" ]; then
