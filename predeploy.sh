@@ -32,7 +32,7 @@ case ${DISTRO_ID} in
 esac
 
 mkdir -p ~/.ssh && eval $(ssh-agent -s)
-if [[ -f /.dockerenv ]]; then
+if [ -f /.dockerenv ]; then
   printf "Host *\n\tStrictHostKeyChecking no\n\n" | tee $HOME/.ssh/config
 fi
 
