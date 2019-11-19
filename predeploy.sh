@@ -14,7 +14,8 @@ else
     echo "Found deploy key"
 fi
 
-mkdir -p ~/.ssh && eval $(ssh-agent -s)
+mkdir -p ~/.ssh 
+eval $(ssh-agent -s)
 if [ -f /.dockerenv ]; then
   printf "Host *\n\tStrictHostKeyChecking no\n\n" > $HOME/.ssh/config
 fi
