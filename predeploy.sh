@@ -16,24 +16,16 @@ else
     echo "Found deploy key"
 fi
 
-function preinstall_ubuntu {
-    apt-get update -y && apt-get install openssh-client -y
-}
-
-function preinstall_alpine {
-    apk update && apk add openssh bash
-}
-
 DISTRO_ID=$(cat /etc/os-release | grep ID | head -n1 | cut -d= -f2)
 
 case ${DISTRO_ID}
     ubuntu)
     elementary)
     mint)
-        preinstall_ubuntu
+        apt-get update -y && apt-get install openssh-client -y
         ;;
     alpine)
-        preinstall_alpine
+        apk update && apk add openssh bash
         ;;
     *)
         echo "Unknow distribution id: $DISTRO_ID" 1>&2
