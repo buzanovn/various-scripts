@@ -3,8 +3,8 @@
 # We check the 
 
 
-if [[ -z "$1" ]]; then
-    if [[ -z "${DEPLOY_KEY}" ]]; then
+if [ -z "$1" ]; then
+    if [ -z "${DEPLOY_KEY}" ]; then
         echo "No deploy key found, nothing to add" 1>&2
         exit 2
     else
@@ -18,7 +18,7 @@ fi
 
 DISTRO_ID=$(cat /etc/os-release | grep ID | head -n1 | cut -d= -f2)
 
-case ${DISTRO_ID}
+case ${DISTRO_ID} in
     ubuntu)
     elementary)
     mint)
