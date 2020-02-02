@@ -19,7 +19,7 @@ apt-install)
     apt_update && apt_install $@
     ;;
 apt-install-from-file)
-    apt_update && apt_install $(cat $2 | egrep -v "^\s*(#|$)")
+    apt_update && apt_install $(cat $1 | egrep -v "^\s*(#|$)")
     ;;
 apt-clean)
     apt-get clean && rm -rf /var/lib/apt/{lists,cache}
