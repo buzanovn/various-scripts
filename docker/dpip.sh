@@ -16,7 +16,7 @@ compile)
     $@
     ;;
 self-upgrade)
-    $PIP3 install --upgrade pip
+    $PIP3 install --upgrade pip && hash -r pip3
     ;;
 install-package)
     $PIP3 install --no-cache-dir $@
