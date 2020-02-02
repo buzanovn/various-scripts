@@ -12,16 +12,16 @@ ARG="$1"
 shift
 
 case ${ARG} in
-apt-update)
+update)
     apt_update
     ;;
-apt-install)
+install)
     apt_update && apt_install $@
     ;;
-apt-install-from-file)
+install-from-file)
     apt_update && apt_install $(cat $1 | egrep -v "^\s*(#|$)")
     ;;
-apt-clean)
+clean)
     apt-get clean && rm -rf /var/lib/apt/{lists,cache}
     ;;
 set-noninteractive)
