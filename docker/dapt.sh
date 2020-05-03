@@ -1,60 +1,66 @@
 #!/bin/sh
 
-apt_update() {
-    echo "Updating"
-    apt-get update -yqq
+PIP3=$(command -v pip3)
+
+pip_compile() {
+    CFLAGS="-g0 -Wl,--strip-all -I/usr/include:/usr/local/include -L/usr/lib:/usr/local/lib" \
+    $PIP3 install -q \
+      --compile \
+      --no-cache-dir \
+      --global-option=build_ext \
+      --global-option="-j$(expr $(nproc) - 1)" \
+    $@
 }
 
-apt_install() {
-    apt-get install -yqq --no-install-recommends $@
+pip_install() {
+    $PIP3 install -q --no-cache-dir $@
 }
 
-apt_install_from_file() {
-    local package_list="$(cat "$1" | egrep -v "^\s(#|$)")"
-    if [ -z "$package_list" ]; then
-        echo "File $1 is empty, nothing to install"
+do_from_file() {
+    if [ ! -e $2 ]; then
+        echo "File $2 does not exist"
+    elif [ ! -s $2 ]; then
+        echo "File $2 is empty, nothing to install"
     else
-        apt_install $package_list
+        $($1 -r $2)
     fi
 }
 
-apt_install_from_directory() {
-    local file_list="$(ls $1 | sort -t - -k 1 -g)"
-    if [ -z "$file_list" ]; then 
+do_from_directory() {
+    local file_list="$(ls $2 | sort -t - -k 1 -g)"
+    if [ -z "$file_list" ]; then
         echo "Directory $1 is empty, nothing to install"
     else
-        for f in $file_list; do 
-            apt_install_from_file "$1/$f"
-        done
+        for f in $file_list; do do_from_file $1 $2/$f; done
     fi
 }
 
-ACTION="$1"
+ARG="$1"
 shift
 
-case ${ACTION} in
-update)
-    apt_update
+case ${ARG} in
+compile)
+    pip_compile $@
     ;;
 install)
-    apt_update && apt_install $@
+    pip_install $@
+    ;;
+compile-from-file)
+    do_from_file "pip_compile" $1
     ;;
 install-from-file)
-    apt_update && apt_install_from_file $1
+    do_from_file "pip_install" $1
+    ;;
+compile-from-directory)
+    do_from_directory "pip_compile" $1
     ;;
 install-from-directory)
-    apt_update && apt_install_from_directory $1
+    do_from_directory "pip_install" $1
     ;;
-clean)
-    apt-get clean && rm -rf /var/lib/apt/{lists,cache}
-    ;;
-set-noninteractive)
-    echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-    echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
-    echo 'Dpkg::Use-Pty "0";' > /etc/apt/apt.conf.d/00usepty
+self-upgrade)
+    $PIP3 install -q --upgrade pip && hash -r pip3
     ;;
 *)
-    echo "Unknown action '${ACTION}'"
-    exit 1
+    $PIP3 $ARG $@
     ;;
 esac
