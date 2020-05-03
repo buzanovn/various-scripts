@@ -22,7 +22,7 @@ do_from_file() {
 
 do_from_directory() {
     local file_list="$(ls $1 | sort -t - -k 1 -g)"
-    if [ -z "$file_list" ];
+    if [ -z "$file_list" ]; then
         echo "Directory $1 is empty, nothing to install"
     else
         for f in $file_list; do do_from_file $1 $2/$f; done
