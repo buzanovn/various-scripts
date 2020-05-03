@@ -10,13 +10,23 @@ apt_install() {
 }
 
 apt_install_from_file() {
-    apt_install $(cat $1 | egrep -v "^\s*(#|$)")
+    local package_list="$(cat "$1" | egrep -v "^\s(#|$)")"
+    if [ -z "$package_list" ]; then
+        echo "File $1 is empty, nothing to install"
+    else
+        apt_install $package_list
+    fi
 }
 
 apt_install_from_directory() {
-    for f in $(ls $1 | sort -t - -k 1 -g); do 
-        apt_install_from_file $f
-    done
+    local file_list="$(ls $1 | sort -t - -k 1 -g)"
+    if [ -z "$file_list" ]; then 
+        echo "Directory $1 is empty, nothing to install"
+    else
+        for f in $file_list; do 
+            apt_install_from_file "$1/$f"
+        done
+    fi
 }
 
 ACTION="$1"
