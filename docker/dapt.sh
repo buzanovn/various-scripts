@@ -19,10 +19,10 @@ apt_install_from_directory() {
     done
 }
 
-ARG="$1"
+ACTION="$1"
 shift
 
-case ${ARG} in
+case ${ACTION} in
 update)
     apt_update
     ;;
@@ -42,5 +42,9 @@ set-noninteractive)
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
     echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
     echo 'Dpkg::Use-Pty "0";' > /etc/apt/apt.conf.d/00usepty
+    ;;
+*)
+    echo "Unknown action '${ACTION}'"
+    exit 1
     ;;
 esac
