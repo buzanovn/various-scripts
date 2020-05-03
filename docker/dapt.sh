@@ -1,19 +1,19 @@
 #!/bin/sh
 
-function apt_update() {
+apt_update() {
     echo "Updating"
     apt-get update -yqq
 }
 
-function apt_install() {
+apt_install() {
     apt-get install -yqq --no-install-recommends $@
 }
 
-function apt_install_from_file() {
+apt_install_from_file() {
     apt_install $(cat $1 | egrep -v "^\s*(#|$)")
 }
 
-function apt_install_from_directory() {
+apt_install_from_directory() {
     for f in $(ls $1 | sort -t - -k 1 -g); do 
         apt_install_from_file $f
     done
@@ -30,10 +30,10 @@ install)
     apt_update && apt_install $@
     ;;
 install-from-file)
-    apt_update && apt_install $(cat $1 | egrep -v "^\s*(#|$)")
+    apt_update && apt_install_from_file $1
     ;;
 install-from-directory)
-    apt_update && { for f in $(ls $1 | sort -t - -k 1 -g); do apt_install $(cat $f | egrep -v "^\s*(#|$)"); done }
+    apt_update && apt_install_from_directory $1
     ;;
 clean)
     apt-get clean && rm -rf /var/lib/apt/{lists,cache}
