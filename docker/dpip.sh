@@ -1,6 +1,12 @@
 #!/bin/sh
 set -x
 
+if [ -z "$DEBUG" ]; then
+    QUIET=""
+else 
+    QUIET="-q"
+fi
+
 source "$(command -v helpers)"
 
 PIP3=$(command -v pip3)
@@ -32,7 +38,7 @@ help () {
 
 pip_compile() {
     CFLAGS="-g0 -Wl,--strip-all -I/usr/include:/usr/local/include -L/usr/lib:/usr/local/lib" \
-    $PIP3 install -q \
+    $PIP3 install $QUIET \
       --compile \
       --no-cache-dir \
       --global-option=build_ext \
@@ -41,7 +47,7 @@ pip_compile() {
 }
 
 pip_install() {
-     $PIP3 install -q --no-cache-dir $@
+     $PIP3 install $QUIET --no-cache-dir $@
 }
 
 do_from_file() {
@@ -58,7 +64,7 @@ do_from_directory() {
 }
 
 self_upgrade() {
-    $PIP3 install -q --upgrade pip
+    $PIP3 install $QUIET --upgrade pip
     hash -r pip3
 }
 
