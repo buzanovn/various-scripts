@@ -62,11 +62,6 @@ self_upgrade() {
     hash -r pip3
 }
 
-if [ -z "$@" ]; then 
-    help
-    exit 1
-fi
-
 ARG="$1"
 shift
 
