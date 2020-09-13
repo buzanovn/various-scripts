@@ -51,6 +51,7 @@ pip_install() {
 
 do_from_file() {
     eval "$1 -r $2"
+}
 
 do_from_directory() {
     local file_list="$(ls $1 | sort -t - -k 1 -g)"
