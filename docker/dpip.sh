@@ -8,7 +8,7 @@ fi
 
 source "$(command -v helpers)"
 
-PIP3=$(command -v pip3)
+PIP3="$(command -v pip3)"
 
 HELP=$(cat << EOM
 Usage:
