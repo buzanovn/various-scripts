@@ -1,8 +1,8 @@
 #!/bin/sh
 if [ -z "$DEBUG" ]; then
-    QUIET=""
-else 
     QUIET="-q"
+else 
+    QUIET=""
     set -x
 fi
 
