@@ -1,6 +1,33 @@
 #!/bin/sh
 
+source ./helpers
+
 PIP3=$(command -v pip3)
+
+HELP=$(cat << EOM
+Usage:
+    dpip <command>
+
+Commands:
+    compile %packagename%                     compiles package from sources
+    install %packagename%                     installs package
+    compile-from-file %filename%              compiles packages stored in file (default requirements format)
+    install-from-file %filename%              installs packages stored in file (default requirements format)
+    compile-from-directory %directorypath%    compiles packages stored in files in directory 
+    install-from-directory %directorypath%    installs packages stored in files in directory
+    self-upgrade                              perform upgrade of pip
+    help                                      show this message
+EOM
+)
+
+help () {
+    echo "$HELP"
+    if [ -z "$PIP3" ]; then
+        echo "pip is not found" >&2
+        exit 1
+    fi
+    echo "\npip version: $($PIP3 -V)"
+}
 
 pip_compile() {
     CFLAGS="-g0 -Wl,--strip-all -I/usr/include:/usr/local/include -L/usr/lib:/usr/local/lib" \
@@ -26,8 +53,18 @@ do_from_directory() {
         echo "Directory $1 is empty, nothing to install"
     else
         for f in $file_list; do do_from_file $1 $2/$f; done
-    done
+    fi
 }
+
+self_upgrade() {
+    $PIP3 install -q --upgrade pip
+    hash -r pip3
+}
+
+if [ -z "$@" ]; then 
+    help
+    exit 1
+fi
 
 ARG="$1"
 shift
@@ -52,7 +89,10 @@ install-from-directory)
     do_from_directory "pip_install" $1
     ;;
 self-upgrade)
-    $PIP3 install -q --upgrade pip && hash -r pip3
+    self_updgrade
+    ;;
+help|--help)
+    help
     ;;
 *)
     $PIP3 $ARG $@
