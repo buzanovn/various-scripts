@@ -1,10 +1,9 @@
 #!/bin/sh
-set -x
-
 if [ -z "$DEBUG" ]; then
     QUIET=""
 else 
     QUIET="-q"
+    set -x
 fi
 
 source "$(command -v helpers)"
