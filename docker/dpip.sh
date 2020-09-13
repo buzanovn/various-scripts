@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 source "$(command -v helpers)"
 
