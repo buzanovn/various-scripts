@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./helpers
+source "$(command -v helpers)"
 
 PIP3=$(command -v pip3)
 
