@@ -35,6 +35,7 @@ fi
 
 for f in $FILES_TO_INSTALL; do
   install_path="$(path_to_name $f)"
+  echo "Installing $RAW_URL/$f to $install_path"
   get_file "$RAW_URL/$f" "$install_path"
   chmod +x "$install_path"
 done
