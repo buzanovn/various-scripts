@@ -6,7 +6,7 @@ else
     set -x
 fi
 
-source "$(command -v helpers)"
+. "$(command -v helpers)"
 
 PIP3="$(command -v pip3)"
 
