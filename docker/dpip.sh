@@ -92,7 +92,7 @@ install-from-directory)
     do_from_directory "pip_install" $1
     ;;
 self-upgrade)
-    self_updgrade
+    self_upgrade
     ;;
 help|--help)
     help
