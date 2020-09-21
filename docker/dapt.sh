@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source "$(command -v helpers)"
+. "$(command -v helpers)"
 
 apt_update() {
     echo "Updating"
